@@ -4,6 +4,11 @@
 [![Docs](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml)
 [![Latest Release](https://img.shields.io/github/v/release/theworker02/compute-shader-software-rasterizer?display_name=tag)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0)
 [![Downloads](https://img.shields.io/github/downloads/theworker02/compute-shader-software-rasterizer/total)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0)
+[![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=cplusplus&logoColor=white)](https://isocpp.org/)
+[![HLSL](https://img.shields.io/badge/HLSL-Compute%20Shaders-1F6FEB)](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl)
+[![Driver](https://img.shields.io/badge/Driver-D3D12%20User--Mode-0A7EA4)](https://learn.microsoft.com/en-us/windows/win32/direct3d12/directx-12-programming-guide)
+[![Graphics](https://img.shields.io/badge/Graphics-GPU%20Rasterization-8A2BE2)](https://en.wikipedia.org/wiki/Rasterisation)
+[![Shaders](https://img.shields.io/badge/Shaders-HLSL%20%7C%20DXIL-228B22)](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl)
 
 Ultimate is a compute-only, tiled, GPU-accelerated software rasterizer built around HLSL compute shaders and a compact D3D12 host wrapper. The project intentionally bypasses the fixed-function raster pipeline and executes the full visibility and shading path inside compute:
 
