@@ -1,5 +1,9 @@
 # Compute Software Rasterizer
 
+[![Build Release](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml/badge.svg)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml)
+[![Docs](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml/badge.svg)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml)
+[![Release](https://img.shields.io/github/v/release/theworker02/compute-shader-software-rasterizer?display_name=tag)](https://github.com/theworker02/compute-shader-software-rasterizer/releases)
+
 This repository now contains a compute-only tiled software rasterizer implemented in HLSL and a minimal D3D12 host wrapper for dispatching it.
 
 It also includes a tiny Win32/D3D12 demo shell that opens a window, creates a swapchain, uploads a small test scene and texture, dispatches the compute rasterizer, and copies the compute-produced color texture into the swapchain backbuffer for presentation.

@@ -8,3 +8,6 @@ bin/
 *.exe
 *.dxil
 *.spv
+
+# Local scratch and planning files
+todo
