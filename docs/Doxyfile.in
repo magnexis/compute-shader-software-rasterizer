@@ -1,4 +1,4 @@
-PROJECT_NAME           = "woah_man"
+PROJECT_NAME           = "ultimate"
 PROJECT_BRIEF          = "Compute-shader software rasterizer architecture hub"
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/docs
 CREATE_SUBDIRS         = NO

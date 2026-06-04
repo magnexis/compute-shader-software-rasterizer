@@ -1,8 +1,8 @@
-# Woah Man Architecture Hub
+# Ultimate Architecture Hub
 
 ## Overview
 
-`woah_man` is a compute-only software rasterizer that bypasses the fixed-function graphics pipeline and executes visibility, tiling, fine rasterization, temporal reconstruction, and experimental acoustic-field generation in HLSL compute passes.
+`ultimate` is a compute-only software rasterizer that bypasses the fixed-function graphics pipeline and executes visibility, tiling, fine rasterization, temporal reconstruction, and experimental acoustic-field generation in HLSL compute passes.
 
 ## Documentation Map
 
