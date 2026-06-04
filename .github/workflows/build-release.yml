@@ -15,13 +15,13 @@ jobs:
         include:
           - os: windows-latest
             build_demo: ON
-            package_name: woah-man-windows
+            package_name: ultimate-windows
           - os: ubuntu-latest
             build_demo: OFF
-            package_name: woah-man-ubuntu
+            package_name: ultimate-ubuntu
           - os: macos-latest
             build_demo: OFF
-            package_name: woah-man-macos
+            package_name: ultimate-macos
 
     steps:
       - uses: actions/checkout@v4
