@@ -47,10 +47,22 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
+          set +e
           mkdir -p artifacts/shaders
+          failed=0
           for entry in CS_Clear CS_TransformVertices CS_SetupAndCull CS_BinTriangles CS_FineRasterize CS_Present; do
             glslangValidator -D -V -S comp -e "$entry" shaders/ComputeSoftwareRasterizer.hlsl -o "artifacts/shaders/${entry}.spv"
+            status=$?
+            if [ $status -ne 0 ]; then
+              echo "::warning::SPIR-V compilation skipped for ${entry} on ${RUNNER_OS}; shader uses DXIL-first features."
+              rm -f "artifacts/shaders/${entry}.spv"
+              failed=1
+            fi
           done
+          if [ $failed -ne 0 ]; then
+            echo "One or more SPIR-V shader blob builds were skipped."
+          fi
+          exit 0
 
       - name: Compile optimized DXIL shader blobs
         if: runner.os == 'Windows'

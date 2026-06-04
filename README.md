@@ -1,9 +1,9 @@
 # Compute Software Rasterizer
 
-[![Build Release](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml/badge.svg)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml)
-[![Docs](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml/badge.svg)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml)
-[![Latest Release](https://img.shields.io/github/v/release/theworker02/compute-shader-software-rasterizer?display_name=tag)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/theworker02/compute-shader-software-rasterizer/total)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/latest)
+[![Build Release](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml/badge.svg?branch=main)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml)
+[![Docs](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml)
+[![Latest Release](https://img.shields.io/github/v/release/theworker02/compute-shader-software-rasterizer?display_name=tag)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0)
+[![Downloads](https://img.shields.io/github/downloads/theworker02/compute-shader-software-rasterizer/total)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0)
 
 This repository now contains a compute-only tiled software rasterizer implemented in HLSL and a minimal D3D12 host wrapper for dispatching it.
 
