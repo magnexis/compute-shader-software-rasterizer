@@ -1,0 +1,130 @@
+Phase 1: Host Application & Architecture Setup
+[x] Initialize Graphics API Context: Setup a bare-minimum Direct3D12 instance with a window and a presentation swapchain.
+[x] Allocate the Geometry Buffers: Create GPU buffers for your input mesh (VertexBuffer and IndexBuffer) and upload asset data.
+[x] Allocate the Framebuffer Resource: Create a packed GPU depth/color target for the compute rasterizer.
+[x] Allocate the Tile Work Queues Buffer: Allocate GPU buffers to hold the primitive count and index array for every 16x16 screen tile.
+[x] Setup Constant Buffers: Create a buffer to pass structural parameters like the Model-View-Projection matrix and execution window dimensions.
+[x] Build the Presentation Blit: Write a present pass plus copy path to transfer raw pixel bytes into the display-ready swapchain texture.
+
+Phase 2: Compute Pass 1 - Geometry Processing
+[x] Write Vertex Transformation Math: Implement the matrix multiplication pipeline (X_clip = MVP x X_model) inside the compute shader.
+[x] Implement Homogeneous Clipping Flags: Code guards to drop primitives that fall entirely outside the standard clip-space boundary.
+[x] Code Perspective Projection Divide: Calculate normalized device coordinates and scale them linearly to absolute screen pixel locations.
+[x] Write the Backface Culling Kernel: Implement the 2D cross-product edge area formula and drop triangles whose evaluated area is <= 0.
+[x] Implement the Visibility Counter: Set up an atomic allocation counter (InterlockedAdd) to write surviving primitives into the global visibility buffer.
+
+Phase 3: Compute Pass 2 - Coarse Tile Binning
+[x] Calculate Screen-Space Bounding Boxes: Find X_min, X_max, Y_min, and Y_max extents for each surviving triangle.
+[x] Map Bounds to Screen Tiles: Divide the bounding box coordinates by 16 to identify which 16x16 screen tile blocks the primitive overlaps.
+[x] Write the Tile Appending Loop: Loop through intersected tile coordinates, calculate flat memory offsets, and use atomics to write triangle IDs into tile queues.
+[x] Implement Overflow Protections: Add a hard boundary check ensuring no tile attempts to store more than the configured triangle capacity.
+
+Phase 4: Compute Pass 3 - Fine Rasterization & Shading
+[x] Configure Wavefront Occupancy: Set the execution layout to [numthreads(16, 16, 1)] so each thread block maps to one 16x16 tile.
+[x] Cache Tile Geometry: Cooperative-load the current tile's triangle index array into groupshared memory instead of streaming one index at a time.
+[x] Write the Edge Evaluation Functions: Implement the linear edge functions for each pixel center P = (X + 0.5, Y + 0.5).
+[x] Derive Analytical Barycentrics: Normalize raw edge evaluations into alpha, beta, and gamma coordinates.
+[x] Implement Perspective-Correct Interpolation: Use the 1 / w formulation to interpolate UVs and normals.
+[x] Write Manual Bilinear Texture Sampling: Bypass native sampling functions and use floor plus lerp math.
+
+Phase 5: Concurrency & Synchronization
+[x] Implement the Fixed-Point Bit-Packing Logic: Add the original 32-bit packed depth/color path alongside the 64-bit path.
+[x] Write the Interlocked Loop: Implement the optimistic concurrency while(true) loop using InterlockedCompareExchange.
+[x] Inject Host UAV Barriers: Place strict synchronization barriers between compute passes on the host side.
+[x] Debug & Profile: Monitor execution time and wave divergence with GPU profiling tools.
+
+Phase 6: Optimization & Hardware Acceleration
+[x] Implement Hierarchical Z-Buffering (Hi-Z): Use coarse tile depth hints to reject tile-triangle work before fine rasterization.
+[x] Optimize Shared Memory Layouts: Bank-align groupshared triangle index cache to reduce bank conflicts.
+[x] Eliminate Thread Divergence: Group triangles in tile work queues by size or area.
+[x] Implement Wave Intrinsic Operations: Use wave-level intrinsics such as WaveActiveAnyTrue to skip interpolation work for empty wave coverage.
+
+Phase 7: Advanced Rendering Features
+[x] Add Multi-Sample Anti-Aliasing (MSAA): Evaluate coverage at multiple sub-pixel sample offsets.
+[x] Implement Vertex Attribute Clipping (Sutherland-Hodgman): Clip triangles against the near plane and generate new valid sub-triangles.
+[x] Integrate Mipmapping Math: Derive texture coordinate derivatives and select mip levels analytically.
+[x] Expand Color Bit-Depth (64-bit Packing): Use a 64-bit atomic payload for depth plus color.
+
+Phase 8: Debugging, Diagnostic Tooling & Validation
+[x] Build a Heatmap Diagnostic Mode: Count triangles evaluated per tile and output an overdraw heatmap.
+[x] Validate Analytical Mathematical Determinism: Add a deterministic frame CRC capture and comparison path for reference-frame validation.
+[x] Profile Wavefront Occupancy: Measure execution latency, cache hit rates, and atomic serialization delays.
+[x] Implement Hot-Reloading Pipeline: Watch shader files and recompile compute passes at runtime.
+
+Phase 9: Non-Euclidean Space & Sub-Warp Geometry Warp
+[x] Implement Non-Linear Vertex Projection: Replace standard linear Perspective Projection matrices with custom mathematical transformations (such as spherical, cylindrical, or hyperbolic space projections) directly inside Pass 1 to allow seamless, native rendering of non-Euclidean spaces without post-processing distortion.
+[x] Write Portal and Stencil Redirection: Code architectural hooks into the coarse rasterizer so that a triangle flagged as a "portal" dynamically shifts the view matrix and forks execution mid-tile, rendering a completely different spatial room into the same 16x16 tile memory space.
+[x] Develop Topology Traversal Algorithms: Implement a software structure that allows triangles to seamlessly stitch across mismatched dimensional coordinates, creating physical space that folds in on itself based on player distance or orientation.
+
+Phase 10: Infinite Detail Stochastic Geometry (Micro-Poly Rasterization)
+[x] Bypass Traditional Mesh Indexing: Modify Pass 1 to read from a continuous, procedural stream or a hierarchical cluster tree (similar to Nanite) that adjusts mesh fidelity dynamically based on exact screen-pixel coverage.
+[x] Implement Pixel-Sized Triangle Pruning: Write an analytical culling check that identifies triangles smaller than a single pixel and routes them to a specialized, ultra-fast microscopic point-rasterizer execution path, skipping barycentric calculation entirely.
+[x] Code Stochastic Triangle Sampling: Implement a randomized temporal or spatial jittering pass inside the fine rasterizer to cleanly resolve sub-pixel geometry aliasing without needing to allocate memory for explicit high-sample MSAA buffers.
+
+Phase 11: Decoupled Ray-Traced Audio & Occlusion Fields
+[x] Repurpose the Fine Rasterizer for Accoustics: Utilize your existing 16x16 tile pipeline to cast secondary acoustic-probing paths. Since you already track fine geometry bounds and depth per tile, use this data to calculate real-time audio soundscape occlusion.
+[x] Calculate Analytical Audio Diffraction: Write a custom pass that treats the borders of your rasterized triangle edges as sonic diffraction points, mathematically bending sound waves around geometric corners in sync with the visual frame.
+[x] Implement Framebuffer Material Density Fields: Expand your atomic pixel-packing structure to store a material density identifier, allowing the audio engine to query the raw render target to determine if a sound is reflecting off metal, wood, or stone.
+
+Phase 12: Reverse-Chronological Temporal Anti-Aliasing (Time-Warping)
+[x] Implement Velocity-Encoded Screen Warping: Store pixel-level movement vectors ($dX/dt, dY/dt$) directly inside your 32-bit packed color/depth payload without writing to an external velocity texture.
+[x] Write Reverse-Chronological Frame Reconstruction: Instead of standard historical blending, code the fine rasterizer to retroactively look forward into a prediction buffer, adjusting pixel color interpolation based on where the triangle will be in the next frame.
+[x] Implement Frame-Isolated Ghosting Elimination: Use your custom InterlockedCompareExchange loop to dynamically audit historical sub-pixel values during heavy motion transitions, rejecting temporal samples if the depth change violates an analytical structural threshold.
+
+Phase 13: Continuous Integration, Matrix Packaging & Release Automation
+[x] Configure Multi-Platform Build Matrices: Write a comprehensive GitHub Actions workflow (.github/workflows/build-release.yml) that triggers on tag creation (v*.*.*). Configure it to compile the host application across a matrix of operating systems (Windows SDK, Ubuntu Linux with Linux-headers, and macOS) using CMake or explicit build tools.
+[x] Automate Multi-Target Shader Optimization: Integrate a compilation step in your CI pipeline that passes your HLSL/GLSL files through the DirectX Shader Compiler (dxc) or glslangValidator with aggressive optimization flags (-O3), outputting stripped, optimized binary blobs (.dxil or .spv) separate from the human-readable source code.
+[x] Inject Automated Artifact Uploads: Use the @actions/upload-artifact action to package your compiled executable binaries, optimized shader blobs, configuration files, and core assets (.obj meshes and raw textures) into standardized .zip and .tar.gz archives.
+[x] Implement Auto-Generating GitHub Releases: Use a tool like softprops/action-gh-release to automatically catch tags, parse commit histories using a conventional changelog standard, generate a beautifully formatted Release Note, and attach your pre-compiled zip/tarball binary artifacts directly to the release page.
+
+Phase 14: Comprehensive Technical Documentation, API Reference & Wiki
+[x] Set Up Doxygen / Sphinx Documentation Engine: Instrument your host-side C++ code and compute shaders with strict Javadoc/Doxygen-style commenting blocks detailing every structure alignment, pointer offset, and thread synchronization choice. Configure a workflow to auto-compile this into a static HTML site.
+[x] Host Live GitHub Pages (Architecture Hub): Set up GitHub Pages to serve your compiled Doxygen documentation. Create dedicated architectural pages detailing:
+- The exact byte distribution of your 32-bit/64-bit packed pixel layout.
+- The exact instruction sequence of the InterlockedCompareExchange loop.
+- A comprehensive matrix showing performance metrics (Wavefront occupancy and frame times) across different GPU hardware generations.
+[x] Draft the Contributor Onboarding Guide (CONTRIBUTING.md): Write an exhaustive guide for other systems developers looking to fork or contribute to your codebase. Outline strict style guides, expected testing protocols for math determinism, and detailed instructions on how to hook custom vertex projection equations into Pass 1 without breaking the downstream tile classifier.
+[x] Establish Issue and Pull Request Templates: Create Markdown templates within .github/ISSUE_TEMPLATE/ forcing users to provide their exact hardware specifications (GPU architecture, driver version, OS kernel) and DXC/Vulkan validation layer logs when reporting synchronization bugs or performance regressions.
+
+Phase 15: Upstream Initialization & Production Release Execution
+
+step 1: Clean Your Workspace
+Before staging files, ensure you aren't accidentally pushing temporary build artifacts, compiled binaries, or IDE cache files (like .vs, out/, build/, or .suo). Create a .gitignore file in your root directory if you haven't already:
+
+# .gitignore
+build/
+out/
+bin/
+.vs/
+*.user
+*.exe
+*.dxil
+*.spv
+
+Step 2: Initialize Git and Stage Core Assets
+Open your terminal in the root directory of your project and run the following sequence to track your files and create your initial main branch:
+# Initialize local repository
+git init -b main
+
+# Stage all files tracking your 14-phase architecture
+git add .
+
+# Commit the foundational engine structure
+git commit -m "feat: initial architecture for compute-shader software rasterizer"
+
+Step 3: Link Your Actual GitHub Account & Push
+Go to GitHub, create a blank repository named compute-shader-software-rasterizer (leave "Initialize this repository with" checkboxes completely blank), and link it:
+
+# Link your local repo to your actual GitHub remote target
+git remote add origin https://github.com/yheworker02/compute-shader-software-rasterizer.git
+
+# Push the main branch upstream
+git push -u origin main
+
+Step 4: Tag the Production Build
+To trigger the automated release workflows you set up in Phase 13 and 14, you need to apply a semantic versioning tag to this specific commit state and push the tag upstream:
+# Create a lightweight or annotated production version tag
+git tag -a v1.0.0 -m "Production Release 1.0.0: Architecture Complete"
+
+# Push the tag to GitHub (This fires off your Actions CI/CD pipeline)
+git push origin v1.0.0

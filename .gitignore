@@ -1,0 +1,10 @@
+build/
+build-docs/
+out/
+bin/
+.vs/
+*.user
+*.suo
+*.exe
+*.dxil
+*.spv

@@ -1,0 +1,31 @@
+PROJECT_NAME           = "woah_man"
+PROJECT_BRIEF          = "Compute-shader software rasterizer architecture hub"
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/docs
+CREATE_SUBDIRS         = NO
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_JAVA   = NO
+OPTIMIZE_FOR_FORTRAN   = NO
+OPTIMIZE_OUTPUT_VHDL   = NO
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = NO
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/README.md \
+                         @CMAKE_CURRENT_SOURCE_DIR@/CONTRIBUTING.md \
+                         @CMAKE_CURRENT_SOURCE_DIR@/docs/index.md \
+                         @CMAKE_CURRENT_SOURCE_DIR@/docs/architecture.md \
+                         @CMAKE_CURRENT_SOURCE_DIR@/docs/performance-matrix.md \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src \
+                         @CMAKE_CURRENT_SOURCE_DIR@/shaders
+FILE_PATTERNS          = *.md *.h *.cpp *.hlsl
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = @CMAKE_CURRENT_SOURCE_DIR@/docs/index.md
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HTML_OUTPUT            = html
+FULL_PATH_NAMES        = NO
+STRIP_FROM_PATH        = @CMAKE_CURRENT_SOURCE_DIR@
+EXTENSION_MAPPING      = hlsl=C++
