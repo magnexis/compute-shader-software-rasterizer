@@ -187,7 +187,10 @@ namespace woah
         m_config.viewportHeight = height;
         m_tileCountX = (width + kTileSize - 1) / kTileSize;
         m_tileCountY = (height + kTileSize - 1) / kTileSize;
-        CreateBuffers(device);
+        if (CreateBuffers(device))
+        {
+            RewriteCachedDescriptors(device);
+        }
     }
 
     bool ComputeSoftwareRasterizer::CreateBuffers(ID3D12Device* device)
@@ -249,6 +252,14 @@ namespace woah
                                                      ID3D12Resource* indexBuffer,
                                                      ID3D12Resource* texture)
     {
+        // Cache descriptor parameters so Resize() can re-bind automatically
+        m_cachedCpuStart = cpuStart;
+        m_cachedDescriptorSize = descriptorSize;
+        m_cachedVertexBuffer = vertexBuffer;
+        m_cachedIndexBuffer = indexBuffer;
+        m_cachedTexture = texture;
+        m_hasCachedDescriptors = true;
+
         auto advance = [&](uint32_t index) -> D3D12_CPU_DESCRIPTOR_HANDLE
         {
             D3D12_CPU_DESCRIPTOR_HANDLE handle = cpuStart;
@@ -358,6 +369,20 @@ namespace woah
         device->CreateUnorderedAccessView(m_presentTexture.Get(), nullptr, &presentUav, advance(21));
 
         return true;
+    }
+
+    void ComputeSoftwareRasterizer::RewriteCachedDescriptors(ID3D12Device* device)
+    {
+        if (!m_hasCachedDescriptors)
+        {
+            return;
+        }
+        WriteDescriptors(device,
+                          m_cachedCpuStart,
+                          m_cachedDescriptorSize,
+                          m_cachedVertexBuffer,
+                          m_cachedIndexBuffer,
+                          m_cachedTexture);
     }
 
     bool ComputeSoftwareRasterizer::CreateRootSignature(ID3D12Device* device)

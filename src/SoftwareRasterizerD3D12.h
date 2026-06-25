@@ -114,6 +114,7 @@ namespace woah
         bool CreateBuffers(ID3D12Device* device);
         bool CreatePipeline(ID3D12Device* device);
         bool CreateRootSignature(ID3D12Device* device);
+        void RewriteCachedDescriptors(ID3D12Device* device);
 
         RasterizerConfig m_config = {};
         uint32_t m_tileCountX = 0;
@@ -149,5 +150,13 @@ namespace woah
         Microsoft::WRL::ComPtr<ID3D12Resource> m_historyTexture;
         Microsoft::WRL::ComPtr<ID3D12Resource> m_previousHistoryTexture;
         Microsoft::WRL::ComPtr<ID3D12Resource> m_presentTexture;
+
+        // Cached descriptor heap parameters for re-binding after Resize()
+        bool m_hasCachedDescriptors = false;
+        D3D12_CPU_DESCRIPTOR_HANDLE m_cachedCpuStart = {};
+        uint32_t m_cachedDescriptorSize = 0;
+        ID3D12Resource* m_cachedVertexBuffer = nullptr;
+        ID3D12Resource* m_cachedIndexBuffer = nullptr;
+        ID3D12Resource* m_cachedTexture = nullptr;
     };
 }
