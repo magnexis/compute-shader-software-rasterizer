@@ -2,8 +2,8 @@
 
 [![Build Release](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml/badge.svg?branch=main)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/build-release.yml)
 [![Docs](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/theworker02/compute-shader-software-rasterizer/actions/workflows/docs.yml)
-[![Latest Release](https://img.shields.io/github/v/release/theworker02/compute-shader-software-rasterizer?display_name=tag)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0)
-[![Downloads](https://img.shields.io/github/downloads/theworker02/compute-shader-software-rasterizer/total)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0)
+[![Latest Release](https://img.shields.io/github/v/release/theworker02/compute-shader-software-rasterizer?display_name=tag)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.1)
+[![Downloads](https://img.shields.io/github/downloads/theworker02/compute-shader-software-rasterizer/total)](https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.1)
 [![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=cplusplus&logoColor=white)](https://isocpp.org/)
 [![HLSL](https://img.shields.io/badge/HLSL-Compute%20Shaders-1F6FEB)](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl)
 [![Driver](https://img.shields.io/badge/Driver-D3D12%20User--Mode-0A7EA4)](https://learn.microsoft.com/en-us/windows/win32/direct3d12/directx-12-programming-guide)
@@ -31,8 +31,8 @@ This repository also includes a small Win32 and D3D12 demo that uploads a test s
 
 - Repository: `https://github.com/theworker02/compute-shader-software-rasterizer`
 - Documentation site: `https://theworker02.github.io/compute-shader-software-rasterizer/`
-- Current release: `https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.0`
-- Current downloadable release asset: `https://github.com/theworker02/compute-shader-software-rasterizer/releases/download/v1.0.0/ultimate.zip`
+- Current release: `https://github.com/theworker02/compute-shader-software-rasterizer/releases/tag/v1.0.1`
+- Current downloadable release asset: `https://github.com/theworker02/compute-shader-software-rasterizer/releases/download/v1.0.1/ultimate.zip`
 
 ## Why this project exists
 
